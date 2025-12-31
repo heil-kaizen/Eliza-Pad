@@ -45,15 +45,42 @@ const PriceTicker: React.FC = () => {
     eth: 2995.27
   });
 
+  const fetchRealPrices = async () => {
+    try {
+      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana,bitcoin,ethereum&vs_currencies=usd');
+      const data = await response.json();
+      if (data.solana && data.bitcoin && data.ethereum) {
+        setPrices({
+          sol: data.solana.usd,
+          btc: data.bitcoin.usd,
+          eth: data.ethereum.usd
+        });
+      }
+    } catch (err) {
+      console.warn("Market data fetch failed, using internal simulation.", err);
+    }
+  };
+
   useEffect(() => {
-    const interval = setInterval(() => {
+    // Initial fetch
+    fetchRealPrices();
+
+    // Poll real API every 60 seconds (respecting free tier limits)
+    const apiInterval = setInterval(fetchRealPrices, 60000);
+
+    // Visual Jitter: subtly update every 3 seconds for a "live" feel
+    const jitterInterval = setInterval(() => {
       setPrices(prev => ({
-        sol: prev.sol + (Math.random() - 0.5) * 0.05,
-        btc: prev.btc + (Math.random() - 0.5) * 2,
-        eth: prev.eth + (Math.random() - 0.5) * 0.2
+        sol: prev.sol + (Math.random() - 0.5) * 0.02,
+        btc: prev.btc + (Math.random() - 0.5) * 1,
+        eth: prev.eth + (Math.random() - 0.5) * 0.1
       }));
     }, 3000);
-    return () => clearInterval(interval);
+
+    return () => {
+      clearInterval(apiInterval);
+      clearInterval(jitterInterval);
+    };
   }, []);
 
   return (
@@ -62,7 +89,7 @@ const PriceTicker: React.FC = () => {
         {/* Solana */}
         <div className="flex items-center gap-1.5">
           <svg width="10" height="10" viewBox="0 0 397 311" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7zM6.5 102.7h317.4c3.5 0 6.8-1.4 9.2-3.8l62.7-62.7c4.1-4.1 1.2-11.1-4.6-11.1H73.8c-3.5 0-6.8 1.4-9.2 3.8L1.9 91.6c-4.1 4.1-1.2 11.1 4.6 11.1zM323.9 133.4c-2.4-2.4-5.7-3.8-9.2-3.8H37.3c-5.8 0-8.7 7-4.6 11.1l62.7 62.7c2.4 2.4 5.7 3.8 9.2 3.8h317.4c5.8 0 8.7-7 4.6-11.1l-62.7-62.7z" fill="url(#sol_grad_mini_right)"/>
+            <path d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7-3.8-9.2-3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7zM6.5 102.7h317.4c3.5 0 6.8-1.4 9.2-3.8l62.7-62.7c4.1-4.1 1.2-11.1-4.6-11.1H73.8c-3.5 0-6.8 1.4-9.2 3.8L1.9 91.6c-4.1 4.1-1.2 11.1 4.6 11.1zM323.9 133.4c-2.4-2.4-5.7-3.8-9.2-3.8H37.3c-5.8 0-8.7 7-4.6 11.1l62.7 62.7c2.4 2.4 5.7 3.8 9.2 3.8h317.4c5.8 0 8.7-7 4.6-11.1l-62.7-62.7z" fill="url(#sol_grad_mini_right)"/>
             <defs>
               <linearGradient id="sol_grad_mini_right" x1="14.3" y1="13" x2="382.4" y2="300" gradientUnits="userSpaceOnUse">
                 <stop stopColor="#00FFA3"/>
