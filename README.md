@@ -1,20 +1,91 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# ElizaPad — TEK Signal Engine
 
-# Run and deploy your AI Studio app
+**ElizaPad** is a Solana-focused launchpad built around **AI-assisted curation** and **technical signal surfacing**.  
+At its core is **TEK** — a signal engine designed to analyze **token structure and risk indicators**, not price action or market hype.
 
-This contains everything you need to run your app locally.
+The objective is to improve launch quality and discovery by prioritizing **signal over noise**.
 
-View your app in AI Studio: https://ai.studio/apps/drive/1WSEil7U4O1OPvI6SBWDew7KU10NmMzp6
+---
 
-## Run Locally
+## What is TEK?
 
-**Prerequisites:**  Node.js
+**TEK** is a technical signal system for Solana tokens.
 
+It evaluates indicators such as:
+- Token structure and configuration
+- Authority and permission states
+- Supply and control indicators
+- Metadata completeness and consistency
+- Common on-chain risk signals
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+TEK is designed to **surface information**, not to make decisions.
+
+TEK is **not**:
+- A price prediction tool
+- A profit indicator
+- A ranking or leaderboard
+- Financial advice
+
+Users remain fully responsible for their own decisions.
+
+---
+
+## What is ElizaPad?
+
+**ElizaPad** is the interface and workflow layer that presents TEK signals in a clear, accessible format.
+
+The broader vision includes:
+- AI-assisted launch flows
+- Automated metadata validation
+- Signal-based discovery instead of hype-driven ranking
+- Reduced exposure to low-effort or poorly structured launches
+
+The system architecture is designed around **agent-based AI workflows inspired by ElizaOS**, enabling modular analysis, validation, and curation logic.
+
+---
+
+## Design Principles
+
+- **Structure first** — technical clarity over marketing
+- **Transparency** — surface signals without manipulation
+- **Neutrality** — no paid placement or bias
+- **User agency** — tools inform, users decide
+
+---
+
+## Capabilities
+
+- Technical signal generation (TEK)
+- Structured signal visualization
+- Wallet-based identity for launch attribution
+- Metadata and configuration analysis
+
+---
+
+## Future Direction
+
+Planned areas of expansion include:
+- Signal refinement and weighting
+- Agent-driven curation logic
+- Public signal exploration tools
+- Deeper on-chain analysis
+- Optional integrations with Solana programs
+
+Development follows an iterative, signal-driven approach rather than fixed timelines.
+
+---
+
+## Disclaimer
+
+ElizaPad and TEK are provided **as-is**.
+
+- No investment advice is given
+- No guarantees are made
+- Users are responsible for their own actions and decisions
+
+---
+
+## Author
+
+Built by an independent developer exploring  
+**AI × Solana × signal-driven infrastructure**.
