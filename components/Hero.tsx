@@ -11,8 +11,13 @@ const Hero: React.FC<HeroProps> = () => {
   const wordsRow3 = ["with", "AI"];
   const wordsRow4 = ["Precision"];
 
-  // Use a string path instead of a module import for the image
-  const mascotPath = 'ElizaPad.png';
+  /**
+   * SENIOR FIX: 
+   * In Vite, root assets aren't served unless they are in 'public/' or resolved via URL constructor.
+   * This method ensures Vite tracks the asset and includes it in the Vercel build.
+   */
+  const localMascot = new URL('../ElizaPad.png', import.meta.url).href;
+  const remoteMascot = "https://r2.erweima.ai/ai_image/3f7e6f66-3d2b-4d7a-8f8d-6d8b9d2e1b9b.jpg";
 
   return (
     <section className="relative min-h-[85vh] flex items-center overflow-hidden pt-20">
@@ -103,15 +108,17 @@ const Hero: React.FC<HeroProps> = () => {
               <div className="absolute inset-0 rounded-full border border-white/5 shadow-[inset_0_0_40px_rgba(0,0,0,0.8)] z-10 pointer-events-none"></div>
               <div className="absolute -inset-[1px] rounded-full bg-gradient-to-tr from-[#FF9A1F]/0 via-[#FF9A1F]/30 to-[#4FD1FF]/30 opacity-40 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
 
-              {/* Character Image - Using standard string path for native ESM compatibility */}
+              {/* Character Image - Use remote mirror for instant production fix, fallback to dynamic local URL */}
               <img 
-                src={mascotPath} 
+                src={remoteMascot} 
                 alt="Eliza Mascot" 
-                className="w-full h-full object-cover animate-mascot"
+                className="w-full h-full object-cover animate-mascot relative z-20"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  // Fallback to high-quality remote mirror if the local file isn't found
-                  target.src = "https://r2.erweima.ai/ai_image/3f7e6f66-3d2b-4d7a-8f8d-6d8b9d2e1b9b.jpg";
+                  // If remote fails or is unavailable, try the local build path
+                  if (target.src !== localMascot) {
+                    target.src = localMascot;
+                  }
                 }}
               />
 
