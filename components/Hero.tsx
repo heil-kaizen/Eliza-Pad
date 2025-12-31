@@ -11,6 +11,9 @@ const Hero: React.FC<HeroProps> = () => {
   const wordsRow3 = ["with", "AI"];
   const wordsRow4 = ["Precision"];
 
+  // Use a string path instead of a module import for the image
+  const mascotPath = 'ElizaPad.png';
+
   return (
     <section className="relative min-h-[85vh] flex items-center overflow-hidden pt-20">
       {/* Background Decor */}
@@ -29,14 +32,12 @@ const Hero: React.FC<HeroProps> = () => {
             </div>
 
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black font-orbitron leading-[1.1] mb-8 text-[#F8F9FA] tracking-tighter">
-              {/* Row 1: Launch Your */}
               <div className="flex flex-wrap gap-x-4">
                 {wordsRow1.map((word, i) => (
                   <span key={i} className="tile-anim" style={{ animationDelay: `${i * 100}ms` }}>{word}</span>
                 ))}
               </div>
               
-              {/* Row 2: Solana Coin */}
               <div className="flex flex-wrap gap-x-4">
                 <span className="tile-anim text-transparent bg-clip-text bg-gradient-to-r from-[#FF9A1F] to-[#F8F9FA]" style={{ animationDelay: '250ms' }}>
                   Solana
@@ -46,14 +47,12 @@ const Hero: React.FC<HeroProps> = () => {
                 </span>
               </div>
 
-              {/* Row 3: with AI */}
               <div className="flex flex-wrap gap-x-4">
                 {wordsRow3.map((word, i) => (
                   <span key={i} className="tile-anim" style={{ animationDelay: `${450 + (i * 100)}ms` }}>{word}</span>
                 ))}
               </div>
 
-              {/* Row 4: Precision */}
               <div className="flex flex-wrap gap-x-4">
                 {wordsRow4.map((word, i) => (
                   <span key={i} className="tile-anim" style={{ animationDelay: `${650 + (i * 100)}ms` }}>{word}</span>
@@ -93,26 +92,25 @@ const Hero: React.FC<HeroProps> = () => {
             </div>
           </div>
 
-          {/* Right Section: Updated Mascot Container to match the reference style */}
+          {/* Right Section: Optimized Mascot Portal */}
           <div className="relative flex justify-center items-center">
-            {/* The "Rounded Section" - Custom Frame with Neon Glow */}
             <div className="relative w-[400px] h-[400px] md:w-[500px] md:h-[500px] rounded-full border-2 border-[#FF9A1F]/20 shadow-[0_0_60px_rgba(255,154,31,0.1)] overflow-hidden group">
-              {/* Background Glow inside circle */}
+              {/* Internal Backgrounds */}
               <div className="absolute inset-0 bg-gradient-to-b from-[#1A1B23] to-black -z-10"></div>
               <div className="absolute inset-0 bg-[radial-gradient(#FF9A1F_1px,transparent_1px)] [background-size:24px_24px] opacity-10"></div>
               
-              {/* Outer Neon Ring Animation */}
+              {/* Portal Frames */}
               <div className="absolute inset-0 rounded-full border border-white/5 shadow-[inset_0_0_40px_rgba(0,0,0,0.8)] z-10 pointer-events-none"></div>
               <div className="absolute -inset-[1px] rounded-full bg-gradient-to-tr from-[#FF9A1F]/0 via-[#FF9A1F]/30 to-[#4FD1FF]/30 opacity-40 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
 
-              {/* Mascot Image - Filling the frame completely as requested */}
+              {/* Character Image - Using standard string path for native ESM compatibility */}
               <img 
-                src="ElizaPad.png" 
+                src={mascotPath} 
                 alt="Eliza Mascot" 
                 className="w-full h-full object-cover animate-mascot"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  // Use the high-quality source that matches the anime style in your reference
+                  // Fallback to high-quality remote mirror if the local file isn't found
                   target.src = "https://r2.erweima.ai/ai_image/3f7e6f66-3d2b-4d7a-8f8d-6d8b9d2e1b9b.jpg";
                 }}
               />
@@ -121,7 +119,7 @@ const Hero: React.FC<HeroProps> = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none z-10"></div>
             </div>
 
-            {/* Orbiting Elements to enhance the cyberpunk feel */}
+            {/* Orbiting Tech Rings */}
             <div className="absolute -z-10 w-[110%] h-[110%] rounded-full border border-white/5 animate-[spin_20s_linear_infinite] opacity-20"></div>
             <div className="absolute -z-10 w-[120%] h-[120%] rounded-full border border-[#4FD1FF]/10 animate-[spin_30s_linear_infinite_reverse] opacity-20"></div>
           </div>
