@@ -1,6 +1,6 @@
-# ElizaPad — TEK Signal Engine
+# ElizaPad 
 
-**ElizaPad** is a Solana-focused launchpad built around **AI-assisted curation** and **technical signal surfacing**.  
+**ElizaPad** is a Solana-focused launchpad built around **ElizaOS** and **technical signal surfacing**.  
 At its core is **TEK** — a signal engine designed to analyze **token structure and risk indicators**, not price action or market hype.
 
 The objective is to improve launch quality and discovery by prioritizing **signal over noise**.
