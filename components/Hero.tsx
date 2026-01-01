@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 interface HeroProps {
@@ -11,14 +11,26 @@ const Hero: React.FC<HeroProps> = () => {
   const wordsRow3 = ["with", "AI"];
   const wordsRow4 = ["Precision"];
 
-  /**
-   * FIX: The previous 'new URL' approach crashed because of how ESM is handled in this environment.
-   * We use a robust path strategy:
-   * 1. Try 'ElizaPad.png' (assuming it's at the root)
-   * 2. Fallback to a high-speed CDN mirror if local fails.
-   */
-  const localMascot = './ElizaPad.png';
+  // Sequential loading state to handle various environment pathing
+  const [imgSrc, setImgSrc] = useState('/ElizaPad.png');
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasFailed, setHasFailed] = useState(false);
+
   const remoteMascot = "https://r2.erweima.ai/ai_image/3f7e6f66-3d2b-4d7a-8f8d-6d8b9d2e1b9b.jpg";
+
+  const handleImageError = () => {
+    console.log("Image load failed for:", imgSrc);
+    if (imgSrc === '/ElizaPad.png') {
+      // Try root-relative if absolute fails
+      setImgSrc('ElizaPad.png');
+    } else if (imgSrc === 'ElizaPad.png') {
+      // Final fallback to high-quality CDN mirror
+      setImgSrc(remoteMascot);
+    } else {
+      setHasFailed(true);
+      setIsLoading(false);
+    }
+  };
 
   return (
     <section className="relative min-h-[85vh] flex items-center overflow-hidden pt-20">
@@ -84,48 +96,45 @@ const Hero: React.FC<HeroProps> = () => {
                 Latest Launches
               </Link>
             </div>
-
-            <div className="mt-16 flex items-center gap-8 text-[#9BA1A6]/40 font-orbitron text-[10px] tracking-[0.3em] uppercase opacity-0 animate-[fadeIn_1s_ease-out_1.4s_forwards]">
-              <div className="flex items-center gap-2">
-                <span className="text-[#FF9A1F] font-black">01</span> AI VERIFIED
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[#4FD1FF] font-black">02</span> RUG-PROOF
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[#FF9A1F] font-black">03</span> NATIVE SOLANA
-              </div>
-            </div>
           </div>
 
-          {/* Right Section: Optimized Mascot Portal */}
+          {/* Right Section: Mascot Portal with Loading States */}
           <div className="relative flex justify-center items-center">
-            <div className="relative w-[400px] h-[400px] md:w-[500px] md:h-[500px] rounded-full border-2 border-[#FF9A1F]/20 shadow-[0_0_60px_rgba(255,154,31,0.1)] overflow-hidden group">
-              {/* Internal Backgrounds */}
-              <div className="absolute inset-0 bg-gradient-to-b from-[#1A1B23] to-black -z-10"></div>
+            <div className="relative w-[400px] h-[400px] md:w-[500px] md:h-[500px] rounded-full border-2 border-[#FF9A1F]/20 shadow-[0_0_60px_rgba(255,154,31,0.1)] overflow-hidden group bg-[#0E0F13]">
+              
+              {/* Background Layers */}
               <div className="absolute inset-0 bg-[radial-gradient(#FF9A1F_1px,transparent_1px)] [background-size:24px_24px] opacity-10"></div>
               
-              {/* Portal Frames */}
-              <div className="absolute inset-0 rounded-full border border-white/5 shadow-[inset_0_0_40px_rgba(0,0,0,0.8)] z-10 pointer-events-none"></div>
-              <div className="absolute -inset-[1px] rounded-full bg-gradient-to-tr from-[#FF9A1F]/0 via-[#FF9A1F]/30 to-[#4FD1FF]/30 opacity-40 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+              {/* Portal Loading Shimmer */}
+              {isLoading && (
+                <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
+                  <div className="w-12 h-12 border-2 border-[#FF9A1F]/30 border-t-[#FF9A1F] rounded-full animate-spin mb-4"></div>
+                  <span className="text-[10px] font-orbitron text-[#FF9A1F] tracking-[0.3em] animate-pulse">NEURAL SYNC...</span>
+                </div>
+              )}
 
               {/* Character Image */}
               <img 
-                src={localMascot} 
+                src={imgSrc} 
                 alt="Eliza Mascot" 
-                className="w-full h-full object-cover animate-mascot relative z-20"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  // If local fails (common in serverless/Vercel without explicit public dir), 
-                  // switch to the remote mirror instantly.
-                  if (target.src !== remoteMascot) {
-                    target.src = remoteMascot;
-                  }
-                }}
+                onLoad={() => setIsLoading(false)}
+                onError={handleImageError}
+                className={`w-full h-full object-cover animate-mascot transition-all duration-1000 ${isLoading ? 'opacity-0 scale-95 blur-xl' : 'opacity-100 scale-100 blur-0'}`}
               />
 
+              {/* Error State Fallback */}
+              {hasFailed && !isLoading && (
+                <div className="absolute inset-0 flex items-center justify-center p-12 text-center">
+                  <div className="font-orbitron">
+                    <div className="text-[#FF9A1F] text-4xl mb-4">⚠</div>
+                    <div className="text-white/40 text-[10px] uppercase tracking-widest">Visual Matrix Disconnected</div>
+                  </div>
+                </div>
+              )}
+
               {/* Holographic Overlays */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none z-10"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none z-10"></div>
+              <div className="absolute inset-0 border-[20px] border-black/20 rounded-full pointer-events-none z-20"></div>
             </div>
 
             {/* Orbiting Tech Rings */}
