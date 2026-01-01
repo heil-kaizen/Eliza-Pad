@@ -12,11 +12,12 @@ const Hero: React.FC<HeroProps> = () => {
   const wordsRow4 = ["Precision"];
 
   /**
-   * SENIOR FIX: 
-   * In Vite, root assets aren't served unless they are in 'public/' or resolved via URL constructor.
-   * This method ensures Vite tracks the asset and includes it in the Vercel build.
+   * FIX: The previous 'new URL' approach crashed because of how ESM is handled in this environment.
+   * We use a robust path strategy:
+   * 1. Try 'ElizaPad.png' (assuming it's at the root)
+   * 2. Fallback to a high-speed CDN mirror if local fails.
    */
-  const localMascot = new URL('../ElizaPad.png', import.meta.url).href;
+  const localMascot = './ElizaPad.png';
   const remoteMascot = "https://r2.erweima.ai/ai_image/3f7e6f66-3d2b-4d7a-8f8d-6d8b9d2e1b9b.jpg";
 
   return (
@@ -108,16 +109,17 @@ const Hero: React.FC<HeroProps> = () => {
               <div className="absolute inset-0 rounded-full border border-white/5 shadow-[inset_0_0_40px_rgba(0,0,0,0.8)] z-10 pointer-events-none"></div>
               <div className="absolute -inset-[1px] rounded-full bg-gradient-to-tr from-[#FF9A1F]/0 via-[#FF9A1F]/30 to-[#4FD1FF]/30 opacity-40 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
 
-              {/* Character Image - Use remote mirror for instant production fix, fallback to dynamic local URL */}
+              {/* Character Image */}
               <img 
-                src={remoteMascot} 
+                src={localMascot} 
                 alt="Eliza Mascot" 
                 className="w-full h-full object-cover animate-mascot relative z-20"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  // If remote fails or is unavailable, try the local build path
-                  if (target.src !== localMascot) {
-                    target.src = localMascot;
+                  // If local fails (common in serverless/Vercel without explicit public dir), 
+                  // switch to the remote mirror instantly.
+                  if (target.src !== remoteMascot) {
+                    target.src = remoteMascot;
                   }
                 }}
               />
