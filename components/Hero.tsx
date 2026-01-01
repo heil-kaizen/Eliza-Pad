@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 interface HeroProps {
@@ -11,26 +11,16 @@ const Hero: React.FC<HeroProps> = () => {
   const wordsRow3 = ["with", "AI"];
   const wordsRow4 = ["Precision"];
 
-  // Start with the local path, then try remote mirrors
-  const [imgSrc, setImgSrc] = useState('/ElizaPad.png');
+  // Using a high-quality Cyberpunk Anime Girl Mascot that fits the "Eliza" persona
+  const ELIZA_MASCOT_URL = "https://r2.erweima.ai/ai_image/3f7e6f66-3d2b-4d7a-8f8d-6d8b9d2e1b9b.jpg";
+  
+  const [imgSrc, setImgSrc] = useState(ELIZA_MASCOT_URL);
   const [isLoading, setIsLoading] = useState(true);
-  const [hasFailed, setHasFailed] = useState(false);
 
-  // Reliable mirrors to ensure the UI never breaks
-  const remoteMascot = "https://r2.erweima.ai/ai_image/3f7e6f66-3d2b-4d7a-8f8d-6d8b9d2e1b9b.jpg";
-  const backupMascot = "https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=1000&auto=format&fit=crop";
-
+  // If the high-quality mirror fails, use a secondary anime-style fallback
   const handleImageError = () => {
-    if (imgSrc === '/ElizaPad.png' || imgSrc === 'ElizaPad.png') {
-      // If local fails, jump straight to the primary remote mascot
-      setImgSrc(remoteMascot);
-    } else if (imgSrc === remoteMascot) {
-      // If primary remote fails, use high-reliability Unsplash fallback
-      setImgSrc(backupMascot);
-    } else {
-      // Only show error if all mirrors fail
-      setHasFailed(true);
-      setIsLoading(false);
+    if (imgSrc !== "https://images.unsplash.com/photo-1635332395848-48e2115f18c6?q=80&w=1000&auto=format&fit=crop") {
+      setImgSrc("https://images.unsplash.com/photo-1635332395848-48e2115f18c6?q=80&w=1000&auto=format&fit=crop");
     }
   };
 
@@ -100,43 +90,36 @@ const Hero: React.FC<HeroProps> = () => {
             </div>
           </div>
 
-          {/* Right Section: Mascot Portal with Robust Loading */}
+          {/* Right Section: Eliza Mascot Portal */}
           <div className="relative flex justify-center items-center">
             <div className="relative w-[400px] h-[400px] md:w-[500px] md:h-[500px] rounded-full border-2 border-[#FF9A1F]/20 shadow-[0_0_60px_rgba(255,154,31,0.1)] overflow-hidden group bg-[#0E0F13]">
               
-              {/* Background Layers */}
+              {/* Grid Background */}
               <div className="absolute inset-0 bg-[radial-gradient(#FF9A1F_1px,transparent_1px)] [background-size:24px_24px] opacity-10"></div>
               
-              {/* Portal Loading Shimmer */}
+              {/* Neural Sync Loader */}
               {isLoading && (
-                <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
+                <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/60 backdrop-blur-md">
                   <div className="w-12 h-12 border-2 border-[#FF9A1F]/30 border-t-[#FF9A1F] rounded-full animate-spin mb-4"></div>
                   <span className="text-[10px] font-orbitron text-[#FF9A1F] tracking-[0.3em] animate-pulse">NEURAL SYNC...</span>
                 </div>
               )}
 
-              {/* Character Image */}
+              {/* Character Image (Cyberpunk Anime Eliza) */}
               <img 
                 src={imgSrc} 
                 alt="Eliza Mascot" 
                 onLoad={() => setIsLoading(false)}
                 onError={handleImageError}
-                className={`w-full h-full object-cover animate-mascot transition-all duration-700 ${isLoading ? 'opacity-0 scale-95 blur-xl' : 'opacity-100 scale-100 blur-0'}`}
+                className={`w-full h-full object-cover animate-mascot transition-all duration-1000 ${isLoading ? 'opacity-0 scale-95 blur-2xl' : 'opacity-100 scale-100 blur-0'}`}
               />
 
-              {/* Error State Fallback - Only shows if ALL mirrors fail */}
-              {hasFailed && !isLoading && (
-                <div className="absolute inset-0 flex items-center justify-center p-12 text-center">
-                  <div className="font-orbitron">
-                    <div className="text-[#FF9A1F] text-4xl mb-4">⚠</div>
-                    <div className="text-white/40 text-[10px] uppercase tracking-widest">Visual Matrix Disconnected</div>
-                  </div>
-                </div>
-              )}
-
               {/* Holographic Overlays */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none z-10"></div>
-              <div className="absolute inset-0 border-[20px] border-black/20 rounded-full pointer-events-none z-20"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none z-10"></div>
+              <div className="absolute inset-0 border-[15px] border-black/20 rounded-full pointer-events-none z-20"></div>
+              
+              {/* Scanline Effect */}
+              <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-25 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]"></div>
             </div>
 
             {/* Orbiting Tech Rings */}
