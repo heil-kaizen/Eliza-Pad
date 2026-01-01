@@ -11,22 +11,24 @@ const Hero: React.FC<HeroProps> = () => {
   const wordsRow3 = ["with", "AI"];
   const wordsRow4 = ["Precision"];
 
-  // Sequential loading state to handle various environment pathing
+  // Start with the local path, then try remote mirrors
   const [imgSrc, setImgSrc] = useState('/ElizaPad.png');
   const [isLoading, setIsLoading] = useState(true);
   const [hasFailed, setHasFailed] = useState(false);
 
+  // Reliable mirrors to ensure the UI never breaks
   const remoteMascot = "https://r2.erweima.ai/ai_image/3f7e6f66-3d2b-4d7a-8f8d-6d8b9d2e1b9b.jpg";
+  const backupMascot = "https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=1000&auto=format&fit=crop";
 
   const handleImageError = () => {
-    console.log("Image load failed for:", imgSrc);
-    if (imgSrc === '/ElizaPad.png') {
-      // Try root-relative if absolute fails
-      setImgSrc('ElizaPad.png');
-    } else if (imgSrc === 'ElizaPad.png') {
-      // Final fallback to high-quality CDN mirror
+    if (imgSrc === '/ElizaPad.png' || imgSrc === 'ElizaPad.png') {
+      // If local fails, jump straight to the primary remote mascot
       setImgSrc(remoteMascot);
+    } else if (imgSrc === remoteMascot) {
+      // If primary remote fails, use high-reliability Unsplash fallback
+      setImgSrc(backupMascot);
     } else {
+      // Only show error if all mirrors fail
       setHasFailed(true);
       setIsLoading(false);
     }
@@ -98,7 +100,7 @@ const Hero: React.FC<HeroProps> = () => {
             </div>
           </div>
 
-          {/* Right Section: Mascot Portal with Loading States */}
+          {/* Right Section: Mascot Portal with Robust Loading */}
           <div className="relative flex justify-center items-center">
             <div className="relative w-[400px] h-[400px] md:w-[500px] md:h-[500px] rounded-full border-2 border-[#FF9A1F]/20 shadow-[0_0_60px_rgba(255,154,31,0.1)] overflow-hidden group bg-[#0E0F13]">
               
@@ -119,10 +121,10 @@ const Hero: React.FC<HeroProps> = () => {
                 alt="Eliza Mascot" 
                 onLoad={() => setIsLoading(false)}
                 onError={handleImageError}
-                className={`w-full h-full object-cover animate-mascot transition-all duration-1000 ${isLoading ? 'opacity-0 scale-95 blur-xl' : 'opacity-100 scale-100 blur-0'}`}
+                className={`w-full h-full object-cover animate-mascot transition-all duration-700 ${isLoading ? 'opacity-0 scale-95 blur-xl' : 'opacity-100 scale-100 blur-0'}`}
               />
 
-              {/* Error State Fallback */}
+              {/* Error State Fallback - Only shows if ALL mirrors fail */}
               {hasFailed && !isLoading && (
                 <div className="absolute inset-0 flex items-center justify-center p-12 text-center">
                   <div className="font-orbitron">
