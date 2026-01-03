@@ -12,9 +12,9 @@ import { Coin, WalletState, WalletType } from './types';
 const DEFAULT_LAUNCHES: Coin[] = [
   {
     id: 'genesis-1',
-    name: 'Neural Link',
-    ticker: 'NEURAL',
-    description: 'The foundational AI layer for autonomous social graph analysis on Solana. Verified by Eliza Core.',
+    name: 'Testing 01',
+    ticker: 'TEST',
+    description: 'Testing launchpad. Verified by Eliza Core.',
     imageUrl: 'https://images.unsplash.com/photo-1635332395848-48e2115f18c6?q=80&w=1000&auto=format&fit=crop',
     creator: '8fGxELIZAPADv1kL9',
     timestamp: Date.now() - 3600000,
@@ -25,9 +25,9 @@ const DEFAULT_LAUNCHES: Coin[] = [
   },
   {
     id: 'genesis-2',
-    name: 'Cyber Sam',
-    ticker: 'SAM',
-    description: 'First autonomous AI agent specialized in high-frequency liquidity provisioning and rug-detection.',
+    name: 'Testing 02',
+    ticker: 'TEST',
+    description: 'Testing launchpad. Verified by Eliza Core.',
     imageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop',
     creator: '3vPrAGENCYmQ2',
     timestamp: Date.now() - 7200000,
