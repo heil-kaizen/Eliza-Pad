@@ -50,7 +50,7 @@ const Navbar: React.FC<NavbarProps> = ({ wallet, onConnect, onDisconnect }) => {
         <div className="flex items-center gap-4">
           {/* Social Link */}
           <a 
-            href="https://x.com" 
+            href="https://x.com/ElizaPad_SOL" 
             target="_blank" 
             rel="noopener noreferrer"
             className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-[#F8F9FA] hover:text-[#FF9A1F] hover:border-[#FF9A1F]/30 hover:bg-[#FF9A1F]/5 transition-all group"
